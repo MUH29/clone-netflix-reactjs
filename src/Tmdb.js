@@ -1,17 +1,6 @@
 const API_KEY = "3626dd255c971e841279537ff15ac31c";
 const API_BASE = "https://api.themoviedb.org/3";
 
-/**
- * - originais netflix
- * - recomendados (trending)
- * - mais votados / em alta (top rated)
- * - alçao
- * - comédia
- * - terror
- * - romance
- * - documentários
- */
-
 const basicFetch = async (endpoint) => {
     const req = await fetch(`${API_BASE}${endpoint}`);
     const json = await req.json();
@@ -78,5 +67,29 @@ export default {
                 ),
             },
         ];
+    },
+    getMovieInfo: async (movieId, type) => {
+        let info = {};
+
+        if (movieId) {
+            switch (type) {
+                case "movie":
+                    info = await basicFetch(
+                        `/movie/${movieId}?language=pt-BR&api_key=${API_KEY}`
+                    );
+                    break;
+
+                case "tv":
+                    info = await basicFetch(
+                        `/tv/${movieId}?language=pt-BR&api_key=${API_KEY}`
+                    );
+                    break;
+                default:
+                    info = null;
+                    break;
+            }
+        }
+
+        return info;
     },
 };
